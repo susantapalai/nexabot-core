@@ -2,6 +2,10 @@ package com.nexabot.controller;
 
 import com.nexabot.dto.ChatRequest;
 import com.nexabot.dto.ChatResponse;
+import com.nexabot.model.Business;
+import com.nexabot.model.ChatMessage;
+import com.nexabot.repository.ChatMessageRepository;
+import com.nexabot.service.BusinessService;
 import com.nexabot.service.GeminiService;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,33 +15,43 @@ import org.springframework.web.bind.annotation.*;
 public class ChatController {
 
     private final GeminiService geminiService;
+    private final BusinessService businessService;
+    private final ChatMessageRepository chatMessageRepository;
 
-    public ChatController(GeminiService geminiService) {
+    public ChatController(GeminiService geminiService,
+                          BusinessService businessService,
+                          ChatMessageRepository chatMessageRepository) {
         this.geminiService = geminiService;
+        this.businessService = businessService;
+        this.chatMessageRepository = chatMessageRepository;
     }
 
     @PostMapping
     public ChatResponse chat(@RequestBody ChatRequest request) {
-
-        // Hardcoded for today — Day 2 we load this from PostgreSQL
-        String businessContext = """
-                Business Name: Pizza Palace
-                Location: MG Road, Pune
-                Timings: 11 AM to 11 PM, all days
-                Menu:
-                - Margherita Pizza: Rs 199 (small), Rs 299 (large)
-                - Paneer Tikka Pizza: Rs 249 (small), Rs 369 (large)
-                - Veg Supreme: Rs 229 (small), Rs 339 (large)
-                Delivery: Free above Rs 399
-                Contact: 98765 43210
-                """;
-
         ChatResponse response = new ChatResponse();
 
         try {
-            String reply = geminiService.chat(request.getMessage(), businessContext);
+            // 1. Fetch business from DB
+            Business business = businessService.getById(
+                    Long.parseLong(request.getBusinessId())
+            );
+
+            // 2. Build context from DB data
+            String context = businessService.buildContext(business);
+
+            // 3. Call Gemini with real context
+            String reply = geminiService.chat(request.getMessage(), context);
+
+            // 4. Save conversation to DB
+            ChatMessage message = new ChatMessage();
+            message.setBusinessId(business.getId());
+            message.setUserMessage(request.getMessage());
+            message.setBotReply(reply);
+            chatMessageRepository.save(message);
+
             response.setReply(reply);
             response.setSuccess(true);
+
         } catch (Exception e) {
             response.setSuccess(false);
             response.setError(e.getMessage());
