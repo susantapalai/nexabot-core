@@ -4,6 +4,8 @@ import com.nexabot.model.Business;
 import com.nexabot.repository.BusinessRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BusinessService {
 
@@ -36,5 +38,13 @@ public class BusinessService {
                 business.getDeliveryInfo(),
                 business.getContactNumber()
         );
+    }
+
+    public List<Business> getAll() {
+        return businessRepository.findAll();
+    }
+
+    public Business save(Business business) {
+        return businessRepository.save(business);
     }
 }

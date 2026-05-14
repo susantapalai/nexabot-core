@@ -1,0 +1,1 @@
+web: java -jar target/nexabot-core-0.0.1-SNAPSHOT.jar
