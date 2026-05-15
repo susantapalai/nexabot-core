@@ -9,6 +9,6 @@ public class NexabotCoreApplication {
 	public static void main(String[] args) {
 
         SpringApplication.run(NexabotCoreApplication.class, args);
-	}
 
+	}
 }
