@@ -9,6 +9,8 @@ import com.nexabot.service.BusinessService;
 import com.nexabot.service.GeminiService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/chat")
 @CrossOrigin(origins = "*")
@@ -24,6 +26,13 @@ public class ChatController {
         this.geminiService = geminiService;
         this.businessService = businessService;
         this.chatMessageRepository = chatMessageRepository;
+    }
+
+    @GetMapping("/history/{businessId}")
+    public List<ChatMessage> getChatHistory(
+            @PathVariable Long businessId) {
+        return chatMessageRepository
+                .findByBusinessIdOrderByCreatedAtDesc(businessId);
     }
 
     @PostMapping
