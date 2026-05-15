@@ -12,6 +12,9 @@ target/
 
 # Environment & Secrets
 application.properties
+application-local.properties
+src/main/resources/application-local.properties
+
 *.env
 .env
 
