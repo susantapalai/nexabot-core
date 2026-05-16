@@ -25,16 +25,16 @@ public class GeminiService {
     public String chat(String userMessage, String businessContext) {
 
         String prompt = """
-                You are a helpful assistant for a local business.
-                Only answer based on the following business information:
+            You are a helpful assistant for a local business.
+            Only answer based on the following business information:
 
-                %s
+            %s
 
-                If you don't know the answer, say:
-                "Please contact us directly for more information."
+            If you don't know the answer, say:
+            "Please contact us directly for more information."
 
-                Customer question: %s
-                """.formatted(businessContext, userMessage);
+            Customer question: %s
+            """.formatted(businessContext, userMessage);
 
         Map<String, Object> requestBody = Map.of(
                 "contents", List.of(
@@ -46,15 +46,32 @@ public class GeminiService {
 
         String fullUrl = apiUrl + "?key=" + apiKey;
 
-        Map response = webClient.post()
-                .uri(fullUrl)
-                .header("Content-Type", "application/json")
-                .bodyValue(requestBody)
-                .retrieve()
-                .bodyToMono(Map.class)
-                .block();
+        try {
+            Map response = webClient.post()
+                    .uri(fullUrl)
+                    .header("Content-Type", "application/json")
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .block();
+            return extractText(response);
 
-        return extractText(response);
+        } catch (Exception e) {
+            // Wait 3 seconds and retry once
+            try {
+                Thread.sleep(3000);
+                Map response = webClient.post()
+                        .uri(fullUrl)
+                        .header("Content-Type", "application/json")
+                        .bodyValue(requestBody)
+                        .retrieve()
+                        .bodyToMono(Map.class)
+                        .block();
+                return extractText(response);
+            } catch (Exception e2) {
+                return "I am a little busy right now. Please try again in a moment! 🙏";
+            }
+        }
     }
 
     private String extractText(Map response) {
