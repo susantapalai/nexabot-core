@@ -7,8 +7,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.List;
 import java.util.Map;
 
+
 @Service
 public class GeminiService {
+
+    private long lastRequestTime = 0;
+    private static final long MIN_DELAY_MS = 4000; // 4 seconds between requests
 
     @Value("${gemini.api.key}")
     private String apiKey;
@@ -23,6 +27,16 @@ public class GeminiService {
     }
 
     public String chat(String userMessage, String businessContext) {
+
+        // Rate limiting — wait minimum 4 seconds between calls
+        long now = System.currentTimeMillis();
+        long timeSinceLast = now - lastRequestTime;
+        if (timeSinceLast < MIN_DELAY_MS) {
+            try {
+                Thread.sleep(MIN_DELAY_MS - timeSinceLast);
+            } catch (InterruptedException ignored) {}
+        }
+        lastRequestTime = System.currentTimeMillis();
 
         String prompt = """
             You are a helpful assistant for a local business.
