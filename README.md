@@ -6,48 +6,92 @@
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5-green?style=for-the-badge\&logo=springboot)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue?style=for-the-badge\&logo=postgresql)
 ![Twilio](https://img.shields.io/badge/Twilio-WhatsApp-red?style=for-the-badge\&logo=twilio)
+![Gemini AI](https://img.shields.io/badge/Gemini-AI-purple?style=for-the-badge\&logo=google)
 ![JWT](https://img.shields.io/badge/Auth-JWT-black?style=for-the-badge\&logo=jsonwebtokens)
-![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-success?style=for-the-badge)
 
-### AI Powered WhatsApp Business Automation Platform
+# AI Powered WhatsApp Business Automation Platform
 
-*Built with Spring Boot, Twilio, JWT Security, and Gemini AI.*
+### Dynamic AI Chatbot for Real Businesses
+
+*Built using Spring Boot, PostgreSQL, Twilio WhatsApp API & Gemini AI.*
 
 </div>
 
 ---
 
-## ✨ Features
+# ✨ Overview
 
-✅ WhatsApp chatbot integration using Twilio
-✅ AI-powered responses with Gemini API
+NexaBot Core is a scalable AI-powered backend platform that helps businesses automate customer conversations on WhatsApp.
+
+Instead of using static chatbot replies, NexaBot dynamically reads business data from PostgreSQL and generates intelligent AI responses using Gemini AI.
+
+The system can answer real customer queries like:
+
+* Opening & closing times
+* Pricing & membership plans
+* Appointment booking
+* Available services
+* Offers & discounts
+* Customer support queries
+* Business information
+
+This project is designed as a real-world AI automation SaaS backend.
+
+---
+
+# 🔥 Key Features
+
+✅ AI-powered WhatsApp chatbot
+✅ Dynamic business-aware responses
+✅ PostgreSQL-driven AI context
 ✅ JWT Authentication & Authorization
-✅ Business management APIs
-✅ Secure Spring Security configuration
-✅ PostgreSQL database integration
-✅ RESTful API architecture
-✅ Chat message handling system
+✅ Multi-business scalable architecture
+✅ Spring Security integration
+✅ RESTful APIs
+✅ WhatsApp automation using Twilio
+✅ Gemini AI integration
 ✅ Clean layered architecture
+✅ Real-time business support automation
 
 ---
 
-## 🛠️ Tech Stack
+# 🛠️ Tech Stack
 
-| Technology      | Usage                      |
-| --------------- | -------------------------- |
-| Java 17         | Backend Development        |
-| Spring Boot 3   | REST API Framework         |
-| Spring Security | Authentication & Security  |
-| JWT             | Token-based Authentication |
-| PostgreSQL      | Database                   |
-| Twilio API      | WhatsApp Messaging         |
-| Gemini AI       | AI Chat Responses          |
-| Maven           | Dependency Management      |
-| Lombok          | Boilerplate Reduction      |
+| Technology      | Purpose                  |
+| --------------- | ------------------------ |
+| Java 17         | Backend Development      |
+| Spring Boot 3   | REST API Framework       |
+| Spring Security | Security Layer           |
+| JWT             | Authentication           |
+| PostgreSQL      | Business Data Storage    |
+| Twilio API      | WhatsApp Integration     |
+| Gemini AI       | Intelligent AI Responses |
+| Maven           | Build Tool               |
+| Lombok          | Boilerplate Reduction    |
+| JPA/Hibernate   | Database ORM             |
 
 ---
 
-## 📂 Project Structure
+# 🧠 How NexaBot Works
+
+```text
+Customer Message
+       ↓
+Twilio WhatsApp Webhook
+       ↓
+Spring Boot Backend
+       ↓
+Fetch Business Context From PostgreSQL
+       ↓
+Generate AI Response Using Gemini AI
+       ↓
+Send Smart Reply Back To WhatsApp
+```
+
+---
+
+# 📂 Project Structure
 
 ```bash
 src/main/java/com/nexabot
@@ -78,30 +122,32 @@ src/main/java/com/nexabot
 │   ├── ChatMessageRepository.java
 │   └── UserRepository.java
 │
+├── security
+│   └── JwtAuthenticationFilter.java
+│
 └── service
     ├── AuthService.java
     ├── BusinessService.java
     ├── GeminiService.java
     ├── JwtService.java
+    ├── PromptBuilderService.java
     └── TwilioService.java
 ```
 
 ---
 
-## ⚙️ Installation & Setup
+# ⚙️ Installation & Setup
 
-### 1️⃣ Clone Repository
+## 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/your-username/nexabot-core.git
+git clone https://github.com/susantapalai/nexabot-core.git
 cd nexabot-core
 ```
 
 ---
 
-### 2️⃣ Configure PostgreSQL
-
-Create a PostgreSQL database:
+## 2️⃣ Configure PostgreSQL
 
 ```sql
 CREATE DATABASE nexabot;
@@ -109,9 +155,9 @@ CREATE DATABASE nexabot;
 
 ---
 
-### 3️⃣ Configure Environment Variables
+## 3️⃣ Configure Environment Variables
 
-Create an `.env` file or configure in `application.properties`
+Add configuration in `application.properties`
 
 ```properties
 # PostgreSQL
@@ -123,23 +169,23 @@ spring.datasource.password=your_password
 jwt.secret=your_secret_key
 
 # Twilio
-TWILIO_ACCOUNT_SID=your_twilio_sid
-TWILIO_AUTH_TOKEN=your_twilio_auth_token
-TWILIO_WHATSAPP_NUMBER=your_twilio_number
+TWILIO_ACCOUNT_SID=your_sid
+TWILIO_AUTH_TOKEN=your_token
+TWILIO_WHATSAPP_NUMBER=your_number
 
 # Gemini AI
-GEMINI_API_KEY=your_gemini_api_key
+GEMINI_API_KEY=your_api_key
 ```
 
 ---
 
-### 4️⃣ Run the Application
+## 4️⃣ Run Application
 
 ```bash
 mvn spring-boot:run
 ```
 
-Server runs on:
+Application runs on:
 
 ```bash
 http://localhost:8080
@@ -147,63 +193,15 @@ http://localhost:8080
 
 ---
 
-## 🔐 Authentication APIs
+# 🔐 Authentication APIs
 
-### Register User
-
-```http
-POST /api/auth/register
-```
-
-### Login User
-
-```http
-POST /api/auth/login
-```
-
-Returns JWT token for secured endpoints.
-
----
-
-## 💬 WhatsApp Integration
-
-This project uses **Twilio WhatsApp Sandbox**.
-
-### Configure Webhook
-
-Set Twilio webhook URL:
-
-```bash
-https://your-domain.com/webhook/whatsapp
-```
-
-For local development use:
-
-```bash
-ngrok http 8080
-```
-
-Then paste the generated HTTPS URL into Twilio Sandbox settings.
-
----
-
-## 🤖 AI Chat Flow
-
-```text
-User Message → Twilio Webhook → Spring Boot API → Gemini AI → Response → WhatsApp
-```
-
----
-
-## 📸 API Examples
-
-### 🔐 Register API
+## Register User
 
 ```http
 POST /api/auth/register
 ```
 
-#### Request Body
+### Request
 
 ```json
 {
@@ -213,7 +211,7 @@ POST /api/auth/register
 }
 ```
 
-#### Response
+### Response
 
 ```json
 {
@@ -224,13 +222,13 @@ POST /api/auth/register
 
 ---
 
-### 🔑 Login API
+## Login User
 
 ```http
 POST /api/auth/login
 ```
 
-#### Request Body
+### Request
 
 ```json
 {
@@ -239,7 +237,7 @@ POST /api/auth/login
 }
 ```
 
-#### Response
+### Response
 
 ```json
 {
@@ -250,137 +248,99 @@ POST /api/auth/login
 
 ---
 
-### 🏢 Create Business API
+# 💬 Real AI Business Chat Examples
 
-```http
-POST /api/business
-```
+## 🕒 Opening Time Query
 
-#### Request Body
+### Customer Message
 
 ```json
 {
-  "businessName": "NexaBot Solutions",
-  "category": "AI Automation",
-  "phone": "+919999999999"
+  "message": "What time do you open tomorrow?"
 }
 ```
 
-#### Response
+### AI Response
 
 ```json
 {
-  "id": 1,
-  "businessName": "NexaBot Solutions",
-  "category": "AI Automation",
-  "phone": "+919999999999"
+  "reply": "We are open from 6:00 AM to 9:00 PM tomorrow 😊"
 }
 ```
 
 ---
 
-### 📋 Get All Businesses
+## 💰 Pricing Query
 
-```http
-GET /api/business
-```
-
-#### Response
-
-```json
-[
-  {
-    "id": 1,
-    "businessName": "NexaBot Solutions",
-    "category": "AI Automation"
-  },
-  {
-    "id": 2,
-    "businessName": "YogaFlow Studio",
-    "category": "Fitness"
-  }
-]
-```
-
----
-
-### 💬 Chat API
-
-```http
-POST /api/chat
-```
-
-#### Example 1 — Business Opening Time
-
-##### Request
+### Customer Message
 
 ```json
 {
-  "message": "What time does your yoga studio open?"
+  "message": "What is your monthly membership price?"
 }
 ```
 
-##### Response
+### AI Response
 
 ```json
 {
-  "reply": "Our yoga studio opens daily at 6:00 AM and closes at 9:00 PM 🧘"
+  "reply": "Our monthly membership starts at ₹1999 with unlimited access to all classes 💪"
 }
 ```
 
 ---
 
-#### Example 2 — Appointment Booking
+## 📅 Appointment Booking
 
-##### Request
+### Customer Message
 
 ```json
 {
-  "message": "Can I book an appointment for tomorrow at 5 PM?"
+  "message": "Can I book an appointment for tomorrow evening?"
 }
 ```
 
-##### Response
+### AI Response
 
 ```json
 {
-  "reply": "Yes! Your appointment has been scheduled for tomorrow at 5:00 PM ✅"
-}
-```
-
----
-
-#### Example 3 — Pricing Query
-
-##### Request
-
-```json
-{
-  "message": "What is the monthly membership cost?"
-}
-```
-
-##### Response
-
-```json
-{
-  "reply": "Our monthly membership starts from ₹1999 including unlimited classes 💪"
+  "reply": "Yes! Your appointment has been scheduled for tomorrow at 6 PM ✅"
 }
 ```
 
 ---
 
-#### Example 4 — Service Availability
+## 🎉 Offers & Discounts
 
-##### Request
+### Customer Message
 
 ```json
 {
-  "message": "Do you provide personal training sessions?"
+  "message": "Do you have any offers today?"
 }
 ```
 
-##### Response
+### AI Response
+
+```json
+{
+  "reply": "Today's special offer: 20% discount on yearly membership plans 🎉"
+}
+```
+
+---
+
+## 🏋️ Service Availability
+
+### Customer Message
+
+```json
+{
+  "message": "Do you provide personal training?"
+}
+```
+
+### AI Response
 
 ```json
 {
@@ -390,118 +350,80 @@ POST /api/chat
 
 ---
 
-#### Example 5 — AI Customer Support
+# 📱 WhatsApp Integration
 
-##### Request
+This project integrates with Twilio WhatsApp Sandbox.
 
-```json
-{
-  "message": "I want to know today's offers"
-}
+## Configure Webhook URL
+
+```bash
+https://your-domain.com/webhook/whatsapp
 ```
 
-##### Response
+For local development:
 
-```json
-{
-  "reply": "Today's special offer: Get 20% discount on yearly membership plans 🎉"
-}
+```bash
+ngrok http 8080
 ```
+
+Then paste the generated HTTPS URL into your Twilio Sandbox webhook configuration.
 
 ---
 
-#### Example 6 — WhatsApp Auto Reply
+# 🚀 Future Improvements
 
-##### Request
-
-```json
-{
-  "message": "Hello"
-}
-```
-
-##### Response
-
-```json
-{
-  "reply": "Hi 👋 Welcome to NexaBot! How can I help you today?"
-}
-```
-
----
-
-### 📱 WhatsApp Webhook API
-
-```http
-POST /webhook/whatsapp
-```
-
-#### Incoming Twilio Payload
-
-```json
-{
-  "From": "whatsapp:+919999999999",
-  "Body": "Hello bot"
-}
-```
-
-#### Bot Response
-
-```json
-{
-  "reply": "Hi! Welcome to NexaBot 🚀"
-}
-```
-
----
-
-## 🚀 Future Improvements
-
-* Multi-business support
+* Multi-tenant business support
+* AI memory & conversation history
 * Admin dashboard
-* Analytics system
 * Payment integration
+* Voice AI support
 * AI workflow automation
-* Multi-language support
+* Analytics dashboard
 * Docker deployment
-* Kubernetes support
+* Kubernetes deployment
+* Multi-language AI responses
 
 ---
 
-## 🧠 Learning Goals From This Project
+# 🧠 What This Project Demonstrates
 
-This project demonstrates:
+This project showcases:
 
-* Spring Boot backend development
-* Secure REST API creation
-* JWT authentication flow
-* WhatsApp chatbot integration
-* AI API integration
-* Database management with JPA
-* Clean architecture design
-
----
-
-## 👨‍💻 Author
-
-### Susanta Palai
-
-💡 Passionate about Backend Development, AI Automation & Scalable Systems.
+* Scalable Spring Boot architecture
+* AI integration in backend systems
+* Dynamic AI prompt engineering
+* PostgreSQL-driven AI responses
+* Secure JWT authentication
+* WhatsApp business automation
+* Real-world SaaS backend development
+* API security & architecture
+* Business automation workflows
 
 ---
 
-## 🌟 Support
+# 👨‍💻 Author
+
+## Susanta Palai
+
+Backend Developer • AI Automation Builder • Spring Boot Developer
+
+Passionate about building scalable AI-powered backend systems and automation products.
+
+---
+
+# 🌟 Support
 
 If you like this project:
 
 ⭐ Star the repository
 🍴 Fork the repository
+🚀 Share with developers
 🛠️ Contribute improvements
 
 ---
 
 <div align="center">
 
-### Built with ❤️ using Spring Boot & AI
+# Built with ❤️ using Spring Boot, AI & WhatsApp Automation
 
 </div>
